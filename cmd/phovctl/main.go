@@ -2,17 +2,20 @@ package main
 
 import (
 	"flag"
-
-	"github.com/Maddosaurus/gophov/loader"
+	"github.com/Maddosaurus/gophov/loader/imagemeta"
 )
 
 func main() {
 	xmpPath := flag.String("x", "", "Filepath to an XMP file you want to extract info of")
+	photoPath := flag.String("p", "", "Filepath to a photo file you want to extract info of")
 
 	flag.Parse()
 
 	if isFlagPassed("x") {
-		loader.ParseXMP(*xmpPath)
+		imagemeta.ParseXMP(*xmpPath)
+	}
+	if isFlagPassed("p") {
+		imagemeta.ParsePhoto(*photoPath)
 	}
 }
 
