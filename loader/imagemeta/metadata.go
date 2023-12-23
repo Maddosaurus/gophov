@@ -4,25 +4,26 @@ import (
 	"github.com/Maddosaurus/gophov/loader"
 	"github.com/evanoberholster/imagemeta"
 	"github.com/evanoberholster/imagemeta/xmp"
-	"log"
+	"log/slog"
 	"os"
 )
 
 // ParseXMP loads meta information from XMP files in a given path
 func ParseXMP(xmpPath string) *loader.XMPSidecar {
 	if len(xmpPath) < 2 {
-		log.Printf("Warning: XMP Path is too short")
+
+		slog.Warn("Warning: XMP Path is too short")
 		return nil
 	}
 	f, err := os.Open(xmpPath)
 	if err != nil {
-		log.Fatalf("failed to open file: %v", err)
+		slog.Error("failed to open file.", "err", err)
 	}
 	defer f.Close()
 
 	e, err := xmp.ParseXmp(f)
 	if err != nil {
-		log.Fatalf("parser error: %v", err)
+		slog.Error("parser error.", "err", err)
 	}
 
 	x := &loader.XMPSidecar{
@@ -39,8 +40,8 @@ func ParseXMP(xmpPath string) *loader.XMPSidecar {
 		ReferencedImage: e.CRS.RawFileName,
 	}
 
-	log.Printf("Loaded item: %v", x.Base)
-	log.Printf("Create XMP Sidecar: %+v", x.ReferencedImage)
+	slog.Debug("Loaded item.", "item", x.Base)
+	slog.Debug("Create XMP Sidecar.", "Sidecar", x.ReferencedImage)
 	return x
 }
 
@@ -48,13 +49,13 @@ func ParseXMP(xmpPath string) *loader.XMPSidecar {
 func ParsePhoto(photoPath string) *loader.Image {
 	f, err := os.Open(photoPath)
 	if err != nil {
-		log.Fatalf("failed to open file: %v", err)
+		slog.Error("failed to open file", "err", err)
 	}
 	defer f.Close()
 
 	e, err := imagemeta.Decode(f)
 	if err != nil {
-		log.Fatalf("parser error: %v", err)
+		slog.Error("parser error", err)
 	}
 
 	i := &loader.Image{
@@ -70,7 +71,7 @@ func ParsePhoto(photoPath string) *loader.Image {
 		}, Filename: e.DocumentName,
 	}
 
-	log.Printf("Loaded item: %v", i.Base)
-	log.Printf("Create Image: %+v", i.Filename)
+	slog.Debug("Loaded item.", "item", i.Base)
+	slog.Debug("Create Image.", "image", i.Filename)
 	return i
 }
