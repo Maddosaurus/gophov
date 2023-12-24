@@ -1,3 +1,4 @@
+// Packagefilter implements utility routines to filter initialized slices of items.
 package filter
 
 import (

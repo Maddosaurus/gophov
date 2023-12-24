@@ -1,3 +1,4 @@
+// Package loader implements functions to load metadata from image and sidecar files.
 package loader
 
 import (

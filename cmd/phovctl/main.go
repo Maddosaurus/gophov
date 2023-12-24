@@ -1,3 +1,6 @@
+/*
+Phovctl provides CLI control of all common features of GoPhoV.
+*/
 package main
 
 import (

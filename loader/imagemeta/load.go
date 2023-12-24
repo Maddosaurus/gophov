@@ -1,3 +1,4 @@
+// Package imagemeta is an implementation of the routines defined in [loader].
 package imagemeta
 
 import (
@@ -8,6 +9,7 @@ import (
 	"strings"
 )
 
+// LoadDir recursively loads all files from a given base dir
 func LoadDir(dir string) []*loader.XMPSidecar {
 	return iterateRecursive(dir)
 }
