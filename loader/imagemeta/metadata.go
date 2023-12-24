@@ -6,6 +6,7 @@ import (
 	"github.com/evanoberholster/imagemeta/xmp"
 	"log/slog"
 	"os"
+	"path/filepath"
 )
 
 // ParseXMP loads meta information from XMP files in a given path
@@ -36,6 +37,7 @@ func ParseXMP(xmpPath string) *loader.XMPSidecar {
 			CameraMake:  e.Tiff.Make,
 			CreatedDate: e.Basic.CreateDate,
 			ModifyDate:  e.Basic.ModifyDate,
+			Filename:    filepath.Base(xmpPath),
 		},
 		ReferencedImage: e.CRS.RawFileName,
 	}
@@ -68,10 +70,10 @@ func ParsePhoto(photoPath string) *loader.Image {
 			CameraMake:  e.Make,
 			CreatedDate: e.CreateDate(),
 			ModifyDate:  e.ModifyDate(),
-		}, Filename: e.DocumentName,
+			Filename:    filepath.Base(photoPath),
+		},
 	}
 
 	slog.Debug("Loaded item.", "item", i.Base)
-	slog.Debug("Create Image.", "image", i.Filename)
 	return i
 }
